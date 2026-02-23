@@ -1,41 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Name - Resume</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Renad, Will You Be My Valentine?</title>
   <style>
+    :root {
+      --bg: linear-gradient(135deg, #fff6fb, #ffeef6 45%, #fde7f6);
+      --card: rgba(255, 255, 255, 0.78);
+      --text: #2a2438;
+      --subtle: #6f6a7a;
+      --yes: linear-gradient(135deg, #ff4f87, #ff7ca8);
+      --no: linear-gradient(135deg, #a7c5ff, #8eb6ff);
+      --shadow: 0 15px 45px rgba(255, 102, 153, 0.25);
+    }
+
+    body.dark {
+      --bg: radial-gradient(circle at 15% 20%, #2a1f55 0%, #14122a 42%, #090915 100%);
+      --card: rgba(18, 19, 41, 0.7);
+      --text: #f6f0ff;
+      --subtle: #c6c2d8;
+      --yes: linear-gradient(135deg, #7c5cff, #ff4f9f);
+      --no: linear-gradient(135deg, #3f5f9b, #587ec7);
+      --shadow: 0 20px 55px rgba(96, 93, 255, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Poppins", "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      transition: background 450ms ease, color 300ms ease;
+      position: relative;
     }
+
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(8px);
+      opacity: 0.35;
+      pointer-events: none;
+      transition: opacity 400ms ease;
+    }
+
+    body::before {
+      width: 300px;
+      height: 300px;
+      background: #ff8fb1;
+      top: -80px;
+      left: -90px;
+    }
+
+    body::after {
+      width: 280px;
+      height: 280px;
+      background: #7a8dff;
+      right: -100px;
+      bottom: -80px;
+    }
+
+    .card {
+      width: min(92vw, 560px);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 26px;
+      padding: 38px 28px 34px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 2;
+      transition: transform 300ms ease, background 300ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    .bear {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      display: inline-block;
+      filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.12));
+      animation: bounce 2.3s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
     h1 {
-      color: #333;
+      margin: 0;
+      font-size: clamp(1.7rem, 3vw, 2.1rem);
+      line-height: 1.3;
     }
-    .section {
-      margin-bottom: 20px;
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--subtle);
+      font-weight: 500;
+      min-height: 22px;
+    }
+
+    .buttons-wrap {
+      margin-top: 28px;
+      min-height: 76px;
+      position: relative;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 18px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 34px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+      transition: transform 200ms ease, filter 200ms ease;
+      user-select: none;
+    }
+
+    button:hover {
+      transform: translateY(-2px) scale(1.02);
+      filter: brightness(1.05);
+    }
+
+    .yes-btn { background: var(--yes); }
+
+    .no-btn {
+      background: var(--no);
+      position: relative;
+    }
+
+    .celebrate {
+      display: none;
+      margin-top: 22px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #ffd7f0;
+      text-shadow: 0 0 14px rgba(255, 94, 200, 0.45);
+    }
+
+    body.dark .celebrate {
+      display: block;
+    }
+
+    .sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+
+    body.dark .sparkles {
+      opacity: 1;
+    }
+
+    .sparkles span {
+      position: absolute;
+      font-size: 1.3rem;
+      animation: float 3.8s linear infinite;
+      opacity: 0.9;
+    }
+
+    .sparkles span:nth-child(1) { left: 8%; top: 85%; animation-delay: 0s; }
+    .sparkles span:nth-child(2) { left: 28%; top: 92%; animation-delay: .8s; }
+    .sparkles span:nth-child(3) { left: 50%; top: 88%; animation-delay: 1.3s; }
+    .sparkles span:nth-child(4) { left: 72%; top: 90%; animation-delay: .5s; }
+    .sparkles span:nth-child(5) { left: 90%; top: 86%; animation-delay: 1.8s; }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(.6) rotate(0deg); opacity: 0; }
+      15% { opacity: 1; }
+      100% { transform: translateY(-110vh) scale(1.2) rotate(240deg); opacity: 0; }
+    }
+
+    @media (max-width: 560px) {
+      .buttons {
+        gap: 12px;
+      }
+      button {
+        padding: 11px 24px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Your Name</h1>
-  <p>Email: youremail@example.com</p>
-  <p>Phone: +123456789</p>
-  <hr />
-  <div class="section">
-    <h2>Education</h2>
-    <p><strong>Degree</strong> - University Name</p>
-    <p>Year of Graduation</p>
+  <div class="sparkles" aria-hidden="true">
+    <span>✨</span><span>💖</span><span>🎆</span><span>🌟</span><span>💫</span>
   </div>
-  <div class="section">
-    <h2>Work Experience</h2>
-    <p><strong>Job Title</strong> - Company Name</p>
-    <p>Month Year - Month Year</p>
-    <p>Description of your responsibilities and accomplishments.</p>
-  </div>
-  <div class="section">
-    <h2>Skills</h2>
-    <p>Programming Languages: Python, HTML, CSS, JavaScript</p>
-  </div>
+
+  <main class="card">
+    <div class="bear" aria-hidden="true">🧸💘</div>
+    <h1>Renad, will you be my Valentine?</h1>
+    <p class="subtitle" id="message">I have a tiny question for you… 💌</p>
+
+    <div class="buttons-wrap" id="buttonArea">
+      <div class="buttons">
+        <button class="yes-btn" id="yesBtn" type="button">Yes 💝</button>
+        <button class="no-btn" id="noBtn" type="button" aria-label="No button">No 😏</button>
+      </div>
+    </div>
+
+    <p class="celebrate">YAAAY! You just made my universe brighter 💖🎇</p>
+  </main>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const message = document.getElementById("message");
+    const buttonArea = document.getElementById("buttonArea");
+
+    let movedOnce = false;
+
+    const moveNoButton = () => {
+      const areaRect = buttonArea.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = Math.max(8, areaRect.width - btnRect.width - 8);
+      const maxY = Math.max(8, areaRect.height - btnRect.height - 8);
+
+      const x = Math.floor(Math.random() * maxX);
+      const y = Math.floor(Math.random() * maxY);
+
+      noBtn.style.position = "absolute";
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+
+      if (!movedOnce) {
+        message.textContent = "Nice try 😄 The No button is in playful mode!";
+        movedOnce = true;
+      }
+    };
+
+    const evadePointer = () => {
+      moveNoButton();
+      noBtn.blur();
+    };
+
+    noBtn.addEventListener("mouseenter", evadePointer);
+    noBtn.addEventListener("focus", evadePointer);
+    noBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      evadePointer();
+    });
+
+    yesBtn.addEventListener("click", () => {
+      document.body.classList.add("dark");
+      message.textContent = "Best answer ever. Let the celebration begin! ✨";
+      noBtn.style.display = "none";
+      yesBtn.textContent = "Forever yes 💞";
+    });
+  </script>
 </body>
 </html>
